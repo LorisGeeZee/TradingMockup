@@ -70,7 +70,7 @@ const TrendGraph: React.FC<Props> = ({ stocks }) => {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
+        label: "Value",
         data: totalValues,
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",

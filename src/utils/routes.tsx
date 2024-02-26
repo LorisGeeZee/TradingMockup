@@ -13,7 +13,7 @@ export const routes = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "/trading",
+    path: "/trade",
     element: <TradingPage />,
   },
 ]);
