@@ -1,10 +1,9 @@
-import Login from "./pages/login/Login";
+import { RouterProvider } from "react-router-dom";
+import { routes } from "./utils/routes";
 
 function App() {
   return (
-    <>
-      <Login />
-    </>
+    <RouterProvider router={routes} future={{ v7_startTransition: true }} />
   );
 }
 
