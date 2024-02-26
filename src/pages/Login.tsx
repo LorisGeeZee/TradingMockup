@@ -34,7 +34,7 @@ const Button = styled.button<{ disabled: boolean }>`
   align-self: center;
 
   &:hover {
-    background-color: ${({ disabled }) => (disabled ? "#BF4F74" : "#0056b3")};
+    background-color: ${({ disabled }) => (disabled ? "grey" : "#1f8e38")};
   }
 `;
 
