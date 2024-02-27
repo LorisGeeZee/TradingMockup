@@ -4,8 +4,8 @@ import TrendGraph from "../components/Trendgraph";
 import { generateStockPrice } from "../utils/generateStockprice";
 import { Link } from "react-router-dom";
 
-import { AppContext } from "../App";
-import { useContext } from "react";
+import { useMoneyStore } from "../stores/useMoneyStore";
+import { useStocksStore } from "../stores/useStocksStore";
 
 const StyledStockList = styled.div`
   display: flex;
@@ -47,11 +47,16 @@ const StyledGraphContainer = styled.div`
 `;
 
 const Dashboard = () => {
-  const appContext = useContext(AppContext);
+  const money = useMoneyStore((state) => state.money);
+  const stocks = useStocksStore((state) => state.stocks);
+  const setStocks = useStocksStore((state) => state.setStocks);
+
+  console.log("money", money);
+  console.log("stocks", stocks);
 
   const updateStockPrices = () => {
-    if (appContext.stocks.length > 0) {
-      return appContext.stocks.map((stock) => {
+    if (stocks.length > 0) {
+      return stocks.map((stock) => {
         const newPrice = generateStockPrice(stock.name);
 
         return { ...stock, value: newPrice };
@@ -61,26 +66,28 @@ const Dashboard = () => {
 
   const handleUpdatePrices = () => {
     const updatedStocks = updateStockPrices();
-    if (updatedStocks) appContext.setStocks(updatedStocks);
+    if (updatedStocks) setStocks(updatedStocks);
   };
 
   useInterval(handleUpdatePrices, 5000);
 
   const calculateTotalValue = () => {
-    const totalValue = appContext.stocks.reduce((total, stock) => {
+    const totalValue = stocks.reduce((total, stock) => {
       return total + stock.value * stock.amount;
     }, 0);
 
     return (Math.round(totalValue * 100) / 100).toFixed(2);
   };
 
+  const moneyFormatted = (Math.round(money * 100) / 100).toFixed(2);
+
   return (
     <StyledContainer>
       <div>Dashboard</div>
-      <div>Money Available: {appContext.money}$</div>
+      <div>Money Available: {moneyFormatted}$</div>
       <StyledStockList>
         Stocks Owned:
-        {appContext.stocks.map((stock, index) => (
+        {stocks.map((stock, index) => (
           <StyledStockItem key={index}>
             {stock.name} x {stock.amount}
           </StyledStockItem>
@@ -88,7 +95,7 @@ const Dashboard = () => {
       </StyledStockList>
       <div>Stock Value: {calculateTotalValue()}$</div>
       <StyledGraphContainer>
-        <TrendGraph stocks={appContext.stocks} />
+        <TrendGraph stocks={stocks} />
       </StyledGraphContainer>
       <StyledButton to={"/trade"}>Trade Stocks</StyledButton>
     </StyledContainer>
