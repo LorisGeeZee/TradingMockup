@@ -41,6 +41,9 @@ export const useStocksStore = create<StockStore>((set) => ({
         const updatedStock = {
           ...existingStock,
           amount: existingStock.amount + 1,
+          value:
+            (existingStock.value * existingStock.amount + value) /
+            (existingStock.amount + 1),
         };
         return {
           stocks: state.stocks.map((stock) =>
